@@ -138,7 +138,6 @@ The below command runs the application using the following parameters:
 		<li> data labels list location (-l)
 	</ul></ul>
 
-	 source /opt/intel/computer_vision_sdk_2018.0.187/bin/setupvars.sh
 	./IEobjectdetection -i opt/intel/tutorials/cvsdk_hello_world/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -l pascal_voc_classes.txt -t SSD
 
 
