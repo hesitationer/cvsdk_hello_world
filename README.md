@@ -8,7 +8,7 @@
 - [ ] [Verify hardware compatibility](https://software.intel.com/en-us/articles/test-0)
 - [ ] [Install prerequisites and dependencies](https://software.intel.com/en-us/articles/test-0)
 - [ ] [Install the Intel® CV SDK package](https://software.intel.com/en-us/articles/test-0)
-- [ ] Install git
+- [ ] Install git:
 	```sudo apt install git```
 
 <br>
@@ -17,19 +17,23 @@
 
 #### 1. Create the tutorial directory
 
-	sudo mkdir -p /opt/intel/tutorials/cvsdk_hello_world
+	sudo mkdir -p /opt/intel/tutorials/
 
 #### 2. Change ownership of the tutorial directory to current user
 
-	sudo chown <user.user> –R /opt/intel/tutorials/cvsdk_hello_world
+	sudo chown <user.user> –R /opt/intel/tutorials/
 
 #### 3. Navigate to the new directory
 
-	cd /opt/intel/tutorials/cvsdk_hello_world
+	cd /opt/intel/tutorials/
 
 #### 4. Download and clone the tutorial content to the current directory (opt/intel/tutorials/cvsdk_hello_world).
 
 	git clone https://github.com/hunnel/cvsdk_hello_world.git
+	
+#### 5. Navigate to the Hello World tutorial directory.
+
+	cd /opt/intel/tutorials/cvsdk_hello_world	
 
 <br>
 
