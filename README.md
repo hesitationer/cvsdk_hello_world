@@ -25,7 +25,7 @@
 
 #### 3. Change ownership of the tutorial directory to current user
 
-	sudo chown <user.user> –R /opt/intel/tutorials/
+	sudo chown –R <user.user> /opt/intel/tutorials/
 
 #### 4. Navigate to the new directory
 
