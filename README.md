@@ -110,7 +110,7 @@ You should see the following two files listed in this directory: **SSD_GoogleNet
 ## Use the optimized models and Inference Engine in a pedestrian detection application
 
 
-#### 1. Open the sample app source code to view the lines that call the Inference Engine.
+#### 1. Open the sample app (main.cpp) in the editor of your choice to view the lines that call the Inference Engine.
 <ul><ul>
 	<li> Line 39 &#8212; adds the Inference Engine plugin to your application</li>
 	<li> Line 107 &#8212; sets the confidence threshold for object detection</li>
