@@ -134,7 +134,7 @@ The below command runs the application using the following parameters:
 <ul><ul>
 		<li> number of frames to process (-fr)
 		<li> location of the optimized deep-learning model (-m)
-		<li> target device (CPU or GPU) to be used for inference (-d)
+		<li> target device (CPU or GPU) to be used for inference (-d) (Note: running inference on a GPU requires additional installation steps. Please see [Install the Intel® CV SDK package](https://software.intel.com/en-us/cvsdk-installguide for detailed instructions.))
 		<li> data labels list location (-l)
 	</ul></ul>
 
