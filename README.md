@@ -1,5 +1,6 @@
 
 
+
 # Intel® Computer Vision SDK | Hello World Tutorial
 
 <br>
@@ -134,8 +135,8 @@ The below command runs the application using the following parameters:
 <ul><ul>
 		<li> number of frames to process (-fr)
 		<li> location of the optimized deep-learning model (-m)
-		<li> target device (CPU or GPU) to be used for inference (-d) 
-		* Note: running inference on a GPU requires additional installation steps. Please see the [CV SDK install guide](https://software.intel.com/en-us/cvsdk-installguide) for detailed instructions. *
+		<li> target device (CPU or GPU) to be used for inference (-d)  
+		<ul><li><strong>Note:</strong> running inference on a GPU requires additional installation steps. Please see the <a href="https://software.intel.com/en-us/cvsdk-installguide" target="_blank">CV SDK Install Guide</a> for detailed instructions. </li></ul>
 		<li> data labels list location (-l)
 	</ul></ul>
 
