@@ -5,9 +5,9 @@
 <br>
 
 ### Prerequisite checklist
-- [ ] [Verify hardware compatibility](https://software.intel.com/en-us/computer-vision-sdk?cid=sem43700020075377675&intel_term=computer+vision+sdk&gclid=CjwKCAiA9f7QBRBpEiwApLGUit1KXgtbu46anzhcsxJVBltKW-JOxPzucCmBxVDZwI_1H4FYgQZ-3RoC96sQAvD_BwE&gclsrc=aw.ds)
-- [ ] [Install OpenCL® and other dependencies](https://software.intel.com/en-us/articles/opencl-drivers)
-- [ ] [Install the Intel® CV SDK and set environment variables](https://software.intel.com/en-us/cvsdk-installguide-installing-on-linux-os)
+- [ ] [Verify hardware compatibility](https://software.intel.com/en-us/articles/test-0)
+- [ ] [Install prerequisites and dependencies](https://software.intel.com/en-us/articles/test-0)
+- [ ] [Install the Intel® CV SDK and set environment variables](https://software.intel.com/en-us/articles/test-0)
 
 <br>
 
