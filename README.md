@@ -8,9 +8,7 @@
 - [ ] [Verify hardware compatibility](https://software.intel.com/en-us/articles/test-0)
 - [ ] [Install prerequisites and dependencies](https://software.intel.com/en-us/articles/test-0)
 - [ ] [Install the Intel® CV SDK package](https://software.intel.com/en-us/articles/test-0)
-- [ ] Install git:
-	
-	```sudo apt install git```
+- [ ] Install git: ```sudo apt install git```
 
 <br>
 
