@@ -96,7 +96,7 @@ The Model Optimizer converts a pretrained Caffe model to be compatible with the 
 
 #### 3. Navigate to the tutorial sample directory
 
-	cd /opt/intel/tutorials/cvsdk_hello_world
+	cd /opt/intel/tutorials/cvsdk_hello_world/samples
 
 #### 4. Verify creation of the optimized model files (the IR files)
 
