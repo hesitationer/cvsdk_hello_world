@@ -28,11 +28,7 @@
 
 #### 4. Download and clone the tutorial content to the current directory (opt/intel/tutorials/cvsdk_hello_world).
 
-	git clone https://github.com/hunnel/cvsdk_hello_world.git
-	
-#### 5. Navigate to the Hello World tutorial directory.
-
-	cd /opt/intel/tutorials/cvsdk_hello_world	
+	git clone https://github.com/hunnel/cvsdk_hello_world.git	
 
 <br>
 
@@ -86,7 +82,7 @@ The Hello World tutorial serves two purposes:
 
 #### 1. Navigate to the cv-sdk directory
 
-	cd /opt/intel/computer_vision_sdk_2018.0.182/deployment_tools/model_optimizer
+	cd /opt/intel/computer_vision_sdk/deployment_tools/model_optimizer
 
 #### 2. Run the Model Optimizer on the pretrained Caffe* model. This step generates one .xml file and one .bin file and place both files in the tutorial samples directory (located here: /opt/intel/tutorials/cvsdk/cvsdk_hello_world/samples/artifacts)
 
