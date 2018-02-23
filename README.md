@@ -14,19 +14,23 @@
 
 ### Install the tutorial support files
 
-#### 1. Create the tutorial directory
+#### 1. Install gflags library
+
+	sudo apt install libgflags-dev
+
+#### 2. Create the tutorial directory
 
 	sudo mkdir -p /opt/intel/tutorials/
 
-#### 2. Change ownership of the tutorial directory to current user
+#### 3. Change ownership of the tutorial directory to current user
 
 	sudo chown <user.user> –R /opt/intel/tutorials/
 
-#### 3. Navigate to the new directory
+#### 4. Navigate to the new directory
 
 	cd /opt/intel/tutorials/
 
-#### 4. Download and clone the tutorial content to the current directory (opt/intel/tutorials/cvsdk_hello_world).
+#### 5. Download and clone the tutorial content to the current directory (opt/intel/tutorials/cvsdk_hello_world).
 
 	git clone https://github.com/hunnel/cvsdk_hello_world.git	
 
