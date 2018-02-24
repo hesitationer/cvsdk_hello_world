@@ -177,11 +177,11 @@ You can also try overriding the confidence level threshold. By setting the new t
 
 ## Next Steps
 
-[Hello World | Part 2: Re-purpose a Pedestrian Detection application to identify cars](https://)(coming soon)
+[Hello World | Part 2: Re-purpose a Pedestrian Detection application to identify cars](https://)  (coming soon)
 
-[CPU vs GPU: How to determine the right balance between power, performance and form-factor](https://)(coming soon)
+[CPU vs GPU: How to determine the right balance between power, performance and form-factor](https://)  (coming soon)
 
-[How to use Model Optimizer with custom layers](https://)(coming soon)
+[How to use Model Optimizer with custom layers](https://)  (coming soon)
 
 <br>
    
