@@ -6,7 +6,7 @@
 <br>
 
 ### Prerequisite checklist
-- [ ] [Verify hardware compatibility](https://www.justinmind.com/usernote/prototypes/32147127/32147571/32356519/index.html#/screens/72de6a1d-c450-4e50-af0e-7c7143519f83)
+- [ ] [Verify hardware compatibility](https://www.justinmind.com/usernote/prototypes/32147127/32147571/32356519/index.html#/screens/089a3df9-759f-4e42-9e02-1d08ba15956a)
 - [ ] [Install prerequisites and dependencies](https://software.intel.com/en-us/articles/test-0)
 - [ ] [Install the Intel® CV SDK package](https://software.intel.com/en-us/articles/test-0)
 - [ ] Install git: ```sudo apt install git```
