@@ -1,10 +1,42 @@
-
-
-
-
 # Intel® Computer Vision SDK | Hello World Tutorial
 
 <br>
+
+### Why this tutorial is important for you
+
+The Hello World tutorial serves two purposes:
+<ol>
+	<li style="color:blue;"><strong>to ensure complete and accurate installation and setup of the Intel CV SDK</strong> and</li>
+	<li><strong>to introduce baseline capabilities needed to optimize end-to-end computer vision and deep-learning on Intel hardware</strong></li>
+</ol>
+
+<br>
+
+### What you’re about to learn
+
+This tutorial uses a Single Shot MultiBox Detector (SSD) on a trained GoogleNet* model to walk you through the basic steps of using two key components of the Intel® CV SDK: the Model Optimizer and Inference Engine. 
+
+Inference is the process of using a trained neural network to interpret meaning from data, such as images. The code sample in this tutorial feeds a short video of pedestrians, frame-by-frame, to the Inference Engine which subsequently utilizes an optimized trained neural network. The photos below show an example frame from the video, one before inference and one after.
+
+<br>
+
+![image of video data before and after inference](https://github.com/hunnel/cvsdk_hello_world/blob/master/images/obj_detect_ped_demo_before_and_after.png "pedestrian detection success")
+
+<br>
+
+### Overview of an end-to-end computer vision application workflow
+
+The figure below shows an example of an end-to-end computer vision application workflow deployed at the edge. Some of the components shown are not part of the Intel® CV SDK, but are included in the diagram to help illustrate a complete end-to-end computer vision process.
+
+![Diagram of an end-to-end computer vision workflow](https://github.com/hunnel/cvsdk_hello_world/blob/master/images/e2e_cv_diagram.png "End-to-end computer vision workflow")
+
+**In the figure:**
+- dark blue boxes highlight the focus of this tutorial
+- white boxes show additional activities in an end-to-end CV workflow; however, these activities are not directly addressed by this tutorial
+
+<br>
+
+***
 
 ### Prerequisite checklist
 - [ ] [Verify hardware compatibility](https://www.justinmind.com/usernote/prototypes/32147127/32147571/32356519/index.html#/screens/089a3df9-759f-4e42-9e02-1d08ba15956a)
@@ -28,6 +60,8 @@
 
 	sudo chown –R <user.user> /opt/intel/tutorials/
 
+> **Note:** There is a known bug with the `chown` command in Ubuntu 16.04.03. If you get an error related to this step try the following command: `sudo chown <user.user> –R /opt/intel/tutorials/`
+
 #### 4. Navigate to the new directory
 
 	cd /opt/intel/tutorials/
@@ -38,53 +72,9 @@
 
 <br>
 
-## Part 1: Optimize and deploy a deep learning model for pedestrian detection (~15 minutes)
+## Part 1: Optimize a deep-learning model using the Model Optimizer (MO)
 
-### What you’re about to learn
-
-This tutorial uses a Single Shot MultiBox Detector (SSD) on a trained GoogleNet* model to walk you through the basic steps of using the Deep Learning Deployment Toolkit’s Inference Engine. The Inference Engine is included in the Intel® CV SDK, and you downloaded the trained model in the preparatory steps above. Although this tutorial uses GoogleNet, on your own you can perform inference on other neural network architectures, such as AlexNet*.
-
-You will begin this tutorial by using the Model Optimizer to convert the trained model to two Intermediate Representation (IR) files. Your result will be one .xml file and one .bin file. The Inference Engine requires this model conversion so it can use the IR as input.
-
-You will then use Inference on the IR files. Inference is the process of using a trained neural network to interpret meaning from data, such as images. The code sample in this tutorial uses images by feeding a short video of pedestrians, frame-by-frame, to the Inference Engine (the trained neural network). The result is image classification output -- text on a screen that displays information about the image, and a video that shows each pedestrian surrounded by a box.
-
-The photo below shows an example frame from the inferred video. The red boxes around the individuals are the result of using the Inference Engine to identify pedestrians. In the original video, the boxes do not exist. The Inference Engine identified objects in the video that it inferred to be pedestrians and drew bounding boxes around them.
-
-<br>
-
-![image of video data before and after inference](https://github.com/hunnel/cvsdk_hello_world/blob/master/images/obj_detect_ped_demo_before_and_after.png "pedestrian detection success")
-
-<br>
-
-### Overview of an end-to-end computer vision application workflow
-
-The figure below shows an example of an end-to-end computer vision application workflow. Some of the components shown are not part of the Intel® CV SDK, but are included in the diagram to help illustrate a complete end-to-end computer vision process.
-
-![Diagram of an end-to-end computer vision workflow](https://github.com/hunnel/cvsdk_hello_world/blob/master/images/e2e_cv_diagram.png "End-to-end computer vision workflow")
-
-**In the figure:**
-- dark blue boxes highlight the focus of this tutorial
-- white boxes are not directly addressed by this tutorial
-- light blue text highlights other Intel® software tools available to use in various steps of an end-to-end computer vision workflow
-
-<br>
-
-### Why this tutorial is important for you
-
-The Hello World tutorial serves two purposes:
-<ol>
-	<li>to ensure complete and accurate installation and setup of the Intel CV SDK and</li>
-	<li>to introduce baseline capabilities needed to optimize end-to-end computer vision and deep-learning on Intel hardware</li>
-</ol>
-
-<br>
-
-***
-
-<br>   
-<br>
-
-## Optimize a deep-learning model using the Model Optimizer (MO)
+In this section, you will use the Model Optimizer to convert a trained model to two Intermediate Representation (IR) files (one .bin and one .xml). The Inference Engine requires this model conversion so it can use the IR as input and achieve optimum performance on Intel hardware.
 
 #### 1. Navigate to the cv-sdk directory
 
@@ -100,6 +90,8 @@ The Hello World tutorial serves two purposes:
 <br>
 
 	python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
+
+> **Note:** Although this tutorial uses Single Shot MultiBox Detector (SSD) on a trained GoogleNet* model, the inference engine is compatible with other neural network architectures, such as AlexNet*.
 
 <br>
 
@@ -120,7 +112,7 @@ You should see the following two files listed in this directory: **SSD_GoogleNet
 <br>
 <br>
 
-## Use the optimized models and Inference Engine in a pedestrian detection application
+## Part 2: Use the optimized models and Inference Engine in a pedestrian detection application
 
 
 #### 1. Open the sample app (main.cpp) in the editor of your choice to view the lines that call the Inference Engine.
@@ -143,7 +135,8 @@ The below command runs the application using the following parameters:
 <ul><ul>
 		<li> number of frames to process (-fr)
 		<li> location of the optimized deep-learning model (-m)
-		<li> target device (CPU or GPU) to be used for inference (-d)  
+		<li> target device (CPU or GPU) to be used for inference (-d) 
+		<li> type of model (SSD, etc) to be used for inference (-t) 
 		<ul><li><strong>Note:</strong> running inference on a GPU requires additional installation steps. Please see the <a href="https://software.intel.com/en-us/cvsdk-installguide" target="_blank">CV SDK Install Guide</a> for detailed instructions. </li></ul>
 		<li> data labels list location (-l)
 	</ul></ul>
