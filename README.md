@@ -7,7 +7,7 @@
 
 The Hello World tutorial serves two purposes:
 <ol>
-	<li style="color:blue;"><strong>to ensure complete and accurate installation and setup of the Intel CV SDK</strong> and</li>
+	<li><strong>to ensure complete and accurate installation and setup of the Intel CV SDK</strong> and</li>
 	<li><strong>to introduce baseline capabilities needed to optimize end-to-end computer vision and deep-learning on Intel hardware</strong></li>
 </ol>
 
