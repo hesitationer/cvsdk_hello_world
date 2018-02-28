@@ -55,8 +55,7 @@ The figure below shows an example of an end-to-end computer vision application w
 	
 	sudo apt install python3-pip
     
-    pip3 install -r requirements_caffe.txt
-
+    pip3 install -r /opt/intel/computer_vision_sdk/deployment_tools/model_optimizer/requirements_caffe.txt
 
 #### 2. Create the tutorial directory
 
@@ -66,7 +65,7 @@ The figure below shows an example of an end-to-end computer vision application w
 
 	sudo chown –R <user.user> /opt/intel/tutorials/
 
-> **Note:** There is a known bug with the `chown` command in Ubuntu 16.04.03. If you get an error related to this step try the following command: `sudo chown <user.user> –R /opt/intel/tutorials/`
+> **Note:** There is a known bug with the `chown` command in Ubuntu 16.04. If you get an error related to this step try the following command: `sudo chown <user.user> –R /opt/intel/tutorials/`
 
 #### 4. Navigate to the new directory
 
@@ -142,10 +141,15 @@ The below command runs the application using the following parameters:
 
 	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -l pascal_voc_classes.txt -t SSD
 
-
-You should see a video play with people walking across and red bounding boxes around them. You should also see the output in the console showing the objects found and the confidence level. The higher the confidence level, the more likely the model is correctly identifying and drawing bounding boxes around pedestrians in the video. (for example: 0.83 is more confident than 0.23)
-
+ 
 > **Note:** If you get an error related to "undefined reference to 'google::FlagRegisterer...", try uninstalling libgflags-dev: sudo apt-get remove libgflags-dev
+
+You should see a video play with people walking across and red bounding boxes around them. You should also see the output in the console showing the objects found and the confidence level. You can think of the confidence level as the model's sensitivity to objects in the video. 
+
+ - A higher confidence level (for example 0.83) means the model is more likely to correctly
+   identify and draw bounding boxes around pedestrians, but it is also
+   more likely to miss some pedestrians.
+  - A lower confidence level (for example 0.23) might identify a higher number of pedestrians; however, it will be more likely to incorrectly identify other objects as pedestrians.
 
 <br>
 
