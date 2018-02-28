@@ -61,11 +61,13 @@ The figure below shows an example of an end-to-end computer vision application w
 
 	sudo mkdir -p /opt/intel/tutorials/
 
-#### 3. Change ownership of the tutorial directory to current user
+#### 3. Change ownership of the tutorial directory to current user 
 
-	sudo chown –R <user.user> /opt/intel/tutorials/
+> **Note:** *replace the usernames below with your user account name*
+		
+	sudo chown –R username.username /opt/intel/tutorials/
 
-> **Note:** There is a known bug with the `chown` command in Ubuntu 16.04. If you get an error related to this step try the following command: `sudo chown <user.user> –R /opt/intel/tutorials/`
+> **Note:** There is a known bug with the `chown` command in Ubuntu 16.04. If you get an error related to this step try the following command: `sudo chown username.username –R /opt/intel/tutorials/`
 
 #### 4. Navigate to the new directory
 
