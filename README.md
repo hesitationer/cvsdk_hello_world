@@ -1,3 +1,4 @@
+
 # Intel® Computer Vision SDK | Hello World Tutorial
 
 <br>
@@ -51,14 +52,15 @@ The figure below shows an example of an end-to-end computer vision application w
 #### 1. Install gflags and python libraries
 
 	sudo apt install libgflags-dev
-	
+<br>
+		
 
+    pip3 install -r requirements_caffe.txt
 
-    	pip3 install -r requirements_caffe.txt 
-    
+ 
+<br>  
 
-
-	python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
+    python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
 
 #### 2. Create the tutorial directory
 
