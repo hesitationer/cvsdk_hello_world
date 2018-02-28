@@ -48,9 +48,17 @@ The figure below shows an example of an end-to-end computer vision application w
 
 ### Install the tutorial support files
 
-#### 1. Install gflags library
+#### 1. Install gflags and python libraries
 
 	sudo apt install libgflags-dev
+	
+	<br>
+
+    	pip3 install -r requirements_caffe.txt 
+    
+<br>
+
+	python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
 
 #### 2. Create the tutorial directory
 
@@ -83,13 +91,6 @@ In this section, you will use the Model Optimizer to convert a trained model to 
 #### 2. Run the Model Optimizer on the pretrained Caffe* model. This step generates one .xml file and one .bin file and place both files in the tutorial samples directory (located here: /opt/intel/tutorials/cvsdk/cvsdk_hello_world/samples/artifacts)
 
     sudo apt install python3-pip
-<br>
-
-    pip3 install -r requirements_caffe.txt 
-    
-<br>
-
-	python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
 
 > **Note:** Although this tutorial uses Single Shot MultiBox Detector (SSD) on a trained GoogleNet* model, the inference engine is compatible with other neural network architectures, such as AlexNet*.
 
