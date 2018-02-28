@@ -164,7 +164,6 @@ You can also try overriding the confidence level threshold. By setting the new t
 	
 <br>
 <br>
-<br>
    
 ## Recap
 
