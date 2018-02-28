@@ -53,8 +53,10 @@ The figure below shows an example of an end-to-end computer vision application w
 	sudo apt install libgflags-dev
 	
 
+
     	pip3 install -r requirements_caffe.txt 
     
+
 
 	python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
 
