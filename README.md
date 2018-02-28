@@ -1,6 +1,7 @@
 
 
 
+
 # Intel® Computer Vision SDK | Hello World Tutorial
 
 <br>
@@ -91,9 +92,16 @@ The Hello World tutorial serves two purposes:
 
 #### 2. Run the Model Optimizer on the pretrained Caffe* model. This step generates one .xml file and one .bin file and place both files in the tutorial samples directory (located here: /opt/intel/tutorials/cvsdk/cvsdk_hello_world/samples/artifacts)
 
-	sudo apt install python3-pip
-	pip3 install -r requirements_caffe.txt 
+    sudo apt install python3-pip
+<br>
+
+    pip3 install -r requirements_caffe.txt 
+    
+<br>
+
 	python3 mo_caffe.py --input_model /opt/intel/tutorials/cvsdk_hello_world/samples/SSD_GoogleNetV2.caffemodel -o /opt/intel/tutorials/cvsdk_hello_world/samples/
+
+<br>
 
 The Model Optimizer converts a pretrained Caffe model to be compatible with the Intel Inference Engine and optimizes it for Intel architecture. These are the files you would include with your C++ application to apply inference to visual data.
 	
