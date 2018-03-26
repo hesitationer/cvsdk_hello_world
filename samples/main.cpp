@@ -38,11 +38,16 @@
 #include <ie_cnn_net_reader.h>
 #include <inference_engine.hpp>
 
+//#include <format_reader_ptr.h>
+#include <ie_extension.h>
+#include <ext_list.hpp>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/photo/photo.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/video/video.hpp>
+
 using namespace cv;
 
 using namespace InferenceEngine::details;
@@ -66,6 +71,10 @@ static const char model_message[] = "Required. Path to IR .xml file.";
 /// @brief message for labels argument
 static const char labels_message[] = "Required. Path to labels file.";
 /// @brief message for plugin argument
+
+static const char custom_cpu_library_message[] = "Required for MKLDNN (CPU)-targeted custom layers." \
+                                                 "Absolute path to a shared library with the kernels impl.";
+
 static const char plugin_message[] = "Plugin name. (MKLDNNPlugin, clDNNPlugin) Force load specified plugin ";
 /// @brief message for assigning cnn calculation to device
 static const char target_device_message[] = "Infer target device (CPU or GPU)";
@@ -90,7 +99,8 @@ DEFINE_string(i, "", image_message);
 DEFINE_string(m, "", model_message);
 /// \brief Define parameter for labels file <br>
 /// It is a required parameter
-DEFINE_string(l, "", labels_message);
+DEFINE_string(f, "", labels_message);
+DEFINE_string(l, "", custom_cpu_library_message);
 /// \brief Define parameter for set plugin name <br>
 /// It is a required parameter
 DEFINE_string(p, "", plugin_message);
@@ -123,7 +133,8 @@ static void showUsage()
 	std::cout << "    -i <path>    " << image_message << std::endl;
 	std::cout << "    -fr <path>   " << frames_message << std::endl;
 	std::cout << "    -m <path>    " << model_message << std::endl;
-	std::cout << "    -l <path>    " << labels_message << std::endl;
+	std::cout << "    -l <path>    " << custom_cpu_library_message << std::endl;
+	std::cout << "    -f <path>    " << labels_message << std::endl;
 	std::cout << "    -d <device>  " << target_device_message << std::endl;
 	std::cout << "    -t <type>    " << infer_type_message << std::endl;
 	std::cout << "    -pc          " << performance_counter_message << std::endl;
@@ -214,8 +225,8 @@ std::vector < DetectedObject > yoloNetParseOutput(float *net_out,
 	std::vector < DetectedObject > boxes;
 	std::vector < DetectedObject > boxes_result;
 	int SS = S * S;     // number of grid cells 7*7 = 49
-	// First 980 values correspons to probabilities for each of the 20 classes for each grid cell.
-	// These probabilities are conditioned on objects being present in each grid cell.
+	// First 980 values correspond to probabilities for each of the 20 classes for each grid cell.
+	// These probabilities are dependent on objects being present in each grid cell.
 	int prob_size = SS * C; // class probabilities 49 * 20 = 980
 	// The next 98 values are confidence scores for 2 bounding boxes predicted by each grid cells.
 	int conf_size = SS * B; // 49*2 = 98 confidences for each grid cell
@@ -232,7 +243,7 @@ std::vector < DetectedObject > yoloNetParseOutput(float *net_out,
 		{
 			float conf = confs[(grid * B + b)];
 			float prob = probs[grid * C + class_num] * conf;
-			prob *= 3;  //TODO: probabilty is too low... check.
+			prob *= 3;  //TODO: probability is too low... check.
 
 			if (prob < threshold) continue;
 
@@ -291,6 +302,21 @@ void printPerformanceCounters(const std::map<std::string, InferenceEngine::Infer
 
 	std::cout << std::setw(20) << std::left << "Total time: " + std::to_string(totalTime) << " milliseconds" << std::endl;
 }
+/*
+inline bool file_exists (const std::string& name) {
+  struct stat buffer;   
+  return (stat (name.c_str(), &buffer) == 0); 
+}
+
+int get_cwd() {
+	char szTmp[32];
+	sprintf(szTmp, "/proc/%d/exe", getpid());
+	int bytes = MIN(readlink(szTmp, pBuf, len), len - 1);
+	if(bytes >= 0)
+		pBuf[bytes] = '\0';
+	return bytes;
+}
+*/
 
 /**
  * \brief The main function of inference engine sample application
@@ -309,15 +335,17 @@ int main(int argc, char *argv[]) {
 		showUsage();
 		return 1;
 	}
+	
 
-	if (FLAGS_l.empty()) {
+	if (FLAGS_f.empty()) {
 		std::cout << "ERROR: labels file path not set" << std::endl;
 		showUsage();
 		return 1;
 	}
 
-	bool noPluginAndBadDevice = FLAGS_p.empty() && FLAGS_d.compare("CPU")
-		&& FLAGS_d.compare("GPU");
+	bool noPluginAndBadDevice = FLAGS_p.empty() && FLAGS_d.compare("CPU") && FLAGS_d.compare("GPU");
+
+
 	if (FLAGS_i.empty() || FLAGS_m.empty() || noPluginAndBadDevice) {
 		if (noPluginAndBadDevice)
 			std::cout << "ERROR: device is not supported" << std::endl;
@@ -364,8 +392,7 @@ int main(int argc, char *argv[]) {
 	// Read class names
 	// ----------------
 	std::string labels[NUMLABELS];
-
-	std::ifstream infile(FLAGS_l);
+	std::ifstream infile(FLAGS_f);
 
 	if (!infile.is_open()) {
 		std::cout << "Could not open labels file" << std::endl;
@@ -388,39 +415,52 @@ int main(int argc, char *argv[]) {
 	std::string archPath = "../../../lib/" OS_LIB_FOLDER "intel64";
 #endif
 
-	InferenceEngine::InferenceEnginePluginPtr _plugin(selectPlugin(
-	{
-		FLAGS_pp,
-		archPath,
-		DEFAULT_PATH_P,
-		""
-		/* This means "search in default paths including LD_LIBRARY_PATH" */
-	},
-		FLAGS_p,
-		FLAGS_d));
+	InferenceEngine::PluginDispatcher dispatcher({ FLAGS_pp, archPath , "" });
+	InferenceEngine::InferenceEnginePluginPtr enginePtr;
 
-	const PluginVersion *pluginVersion;
-	_plugin->GetVersion((const InferenceEngine::Version*&)pluginVersion);
-	std::cout << pluginVersion << std::endl;
+	/** Loading plugin for device **/
+	enginePtr = dispatcher.getPluginByDevice(FLAGS_d);
 
-	// ----------------
-	// Enable performance counters
-	// ----------------
+	/** Here we are loading the library with extensions if provided**/
+	InferencePlugin plugin(enginePtr);
 
-	if (FLAGS_pc) {
-		_plugin->SetConfig({ { PluginConfigParams::KEY_PERF_COUNT, PluginConfigParams::YES } }, nullptr);
+	if (!FLAGS_l.empty()) {
+		// CPU(MKLDNN) extensions is loaded as a shared library and passed as a pointer to base extension
+		auto extension_ptr = make_so_pointer<InferenceEngine::IExtension>(FLAGS_l.c_str());
+		plugin.AddExtension(extension_ptr);
+	} else if (!FLAGS_f.empty()) {
+		// Load clDNN Extensions
+		//plugin.SetConfig({{PluginConfigParams::KEY_CONFIG_FILE, FLAGS_f}});
+		plugin.SetConfig({ { PluginConfigParams::KEY_PERF_COUNT, PluginConfigParams::YES } });
 	}
 
-	// ----------------
-	// Read network
-	// ----------------
+
+	if ((FLAGS_d.find("CPU") != std::string::npos)) {
+		// Required for support of certain layers in CPU (now in a separate lib)
+		plugin.AddExtension(std::make_shared<Extensions::Cpu::CpuExtensions>());
+	}
+
+
+	InferenceEngine::ResponseDesc resp;
+	if (FLAGS_pc) {
+		enginePtr->SetConfig({ {PluginConfigParams::KEY_PERF_COUNT, PluginConfigParams::YES} }, &resp);
+	}
+
+	const PluginVersion *pluginVersion;
+	enginePtr->GetVersion((const InferenceEngine::Version*&)pluginVersion);
+	std::cout << pluginVersion << std::endl;
+
+	// ----------------------------------------------------------------------------
+	// Read neural network model
+	// ----------------------------------------------------------------------------
 	InferenceEngine::CNNNetReader network;
 
 	try {
 		network.ReadNetwork(FLAGS_m);
 	}
-	catch (InferenceEngineException ex) {
-		std::cerr << "Failed to load network: " << ex.what() << std::endl;
+	catch (const std::exception& err) {
+		//std::cerr << "Failed to load network: " << err.what() << std::endl;
+		std::cout << "Failed to load network." << std::endl;
 		return 1;
 	}
 
@@ -482,7 +522,7 @@ int main(int argc, char *argv[]) {
 	// look for the input == imageData
 	DataPtr image = inputs[imageInputName]->getInputData();
 
-	inputs[imageInputName]->setInputPrecision(FP32);
+	inputs[imageInputName]->setInputPrecision(Precision::FP32);
 
 	// --------------------
 	// Allocate input blobs
@@ -490,7 +530,7 @@ int main(int argc, char *argv[]) {
 	InferenceEngine::BlobMap inputBlobs;
 	InferenceEngine::TBlob<float>::Ptr input =
 		InferenceEngine::make_shared_blob < float,
-		const InferenceEngine::SizeVector >(FP32, inputDims);
+		const InferenceEngine::SizeVector >(Precision::FP32, inputDims);
 	input->allocate();
 
 	inputBlobs[imageInputName] = input;
@@ -509,7 +549,7 @@ int main(int argc, char *argv[]) {
 
 	InferenceEngine::ResponseDesc dsc;
 
-	InferenceEngine::StatusCode sts = _plugin->LoadNetwork(network.getNetwork(), &dsc);
+	InferenceEngine::StatusCode sts = enginePtr->LoadNetwork(network.getNetwork(), &dsc);
 	if (sts != 0) {
 		std::cout << "Error loading model into plugin: " << dsc.msg << std::endl;
 		return 1;
@@ -536,8 +576,7 @@ int main(int argc, char *argv[]) {
 		InferenceEngine::TBlob < float >::Ptr output;
 		output =
 			InferenceEngine::make_shared_blob < float,
-			const InferenceEngine::SizeVector >(InferenceEngine::FP32,
-				outputDims);
+			const InferenceEngine::SizeVector >(Precision::FP32, outputDims);
 		output->allocate();
 
 		outputBlobs[item.first] = output;
@@ -634,7 +673,7 @@ int main(int argc, char *argv[]) {
 		//---------------------------
 		// INFER STAGE
 		//---------------------------
-		sts = _plugin->Infer(inputBlobs, outputBlobs, &dsc);
+		sts = enginePtr->Infer(inputBlobs, outputBlobs, &dsc);
 		if (sts != 0) {
 			std::cout << "An infer error occurred: " << dsc.msg << std::endl;
 			return 1;
@@ -646,7 +685,7 @@ int main(int argc, char *argv[]) {
 
 		if (FLAGS_pc) {
 			std::map<std::string, InferenceEngine::InferenceEngineProfileInfo> perfomanceMap;
-			_plugin->GetPerformanceCounts(perfomanceMap, nullptr);
+			enginePtr->GetPerformanceCounts(perfomanceMap, nullptr);
 
 			printPerformanceCounters(perfomanceMap);
 		}
