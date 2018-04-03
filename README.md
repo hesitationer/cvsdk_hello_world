@@ -141,7 +141,7 @@ The below command runs the application using the following parameters:
 		<li> data labels list location (-l)
 	</ul></ul>
 
-	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -l pascal_voc_classes.txt -t SSD
+	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -f pascal_voc_classes.txt -t SSD
 
  
 > **Note:** If you get an error related to "undefined reference to 'google::FlagRegisterer...", try uninstalling libgflags-dev: sudo apt-get remove libgflags-dev
@@ -160,12 +160,12 @@ You should see a video play with people walking across and red bounding boxes ar
 #### 1. Adjust the number of video frames to run through the Inference Engine
 The sample video file contains approximately 790 frames; however, in the previous example we opted to ran inference on a subset of those frames. Update the -fr parameter flag to adjust the amount of frames being processed through the Inference Engine.
 	
-	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -l pascal_voc_classes.txt -t SSD
+	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -f pascal_voc_classes.txt -t SSD
 
 #### 2. Modify the object detection confidence level threshold
 You can also try overriding the confidence level threshold. By setting the new threshold to 0.1, you will see a lot more bounding boxes around the people, but will have more instances of 'false' boxes appearing around non-pedestrian objects.
 	
-	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -l pascal_voc_classes.txt -t SSD
+	./IEobjectdetection -i /opt/intel/tutorials/cvsdk_hello_world/samples/hello_world_1.avi -fr 200 -m SSD_GoogleNetV2.xml -d CPU -f pascal_voc_classes.txt -t SSD
 	
 <br>
 <br>
